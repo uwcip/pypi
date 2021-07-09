@@ -6,29 +6,30 @@ A package index for GitHub.
 This repository is a combination of two parts:
 
 1. It is a PyPi repository for the Center for an Informed Public.
-2. It is a project that can be used to generate your own repositories.
+2. It is a project that can be used to generate your PyPi repository using GitHub pages.
 
-How is this different than other static pypi generators? This one takes a list of GitHub repositories, uses the GitHub
-API to get a list of releases, and then makes a page that works well with GitHub Pages.
+How is this different from other static pypi generators? This one takes a list of GitHub repositories, uses the GitHub
+API to get a list of releases for those repositories, and then makes static pages that deploy well with GitHub Pages.
 
-## Generating static files!
+## Generating static files
 
-First, create a file that will contain a list of all of the repositories that you have. It might look like this:
+First, create a file that will contain the list of all of the repositories that want to poll for new releases. It might
+look like this:
 
     uwcip/ciptools
 
-In this example we have exactly one repository called "ciptools" and it is under the "uwcip" owner.
+In the above example we have exactly one repository called `ciptools` and it is under the `uwcip` owner.
 
-You can then invoke the script:
+Then you will invoke the script:
 
     $ echo $GITHUB_TOKEN | ghpypi --output docs --repositories repositories --title "CIP PyPi" --token-stdin
 
-The built index will now be in `docs` and you can use GitHub Pages to share the `docs` directory.
+The newly built static index can noe be found under `docs` and you can use GitHub Pages to share the `docs` directory.
 
-## Automatically generating static files!
+## Automatically generating static files
 
 You might want to put this into some sort of cron job to rebuild on a regular basis. We can use GitHub Actions to
-accomplish that! Create an actions file that looks like this:
+accomplish that. Create an actions workflow file that looks like this:
 
 ```yaml
 name: Generate Index
@@ -64,7 +65,7 @@ jobs:
 ```
 
 If you want to trigger a rebuild of the index when another repository does something then you can do that with an action
-as well. Add this to your other repository:
+as well. Add this to your other repository to trigger a build in this repository:
 
 ```yaml
   - name: update pypi
@@ -83,10 +84,10 @@ The `WORKFLOW_TOKEN` is a personal access token that is granted admin rights to 
 You cannot use the regular `GITHUB_TOKEN` secret because GitHub does not want you to inadvertently create circular
 actions. (You can purposely create circular actions, though!)
 
-## Using your deployed index server with pip
+## Using your deployed index server with pip (or poetry)
 
 When running pip, pass `--extra-index-url https://myorg.github.io/mypypi/simple` or set the environment variable
-`PIP_EXTRA_INDEX_URL==https://myorg.github.io/mypypi/simple`. Or if you're using [poetry](https://python-poetry.org/)
+`PIP_EXTRA_INDEX_URL==https://myorg.github.io/mypypi/simple`. If you're using [poetry](https://python-poetry.org/)
 then simply add this to your `pyproject.toml` file:
 
 ```toml
@@ -94,6 +95,10 @@ then simply add this to your `pyproject.toml` file:
 name = "mypypi"
 url = "https://myorg.github.io/mypypi/simple/"
 ```
+
+## TODO
+
+This project needs some tests.
 
 ## Credits
 
