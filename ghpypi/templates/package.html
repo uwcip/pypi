@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>{{ package_name }}</title>
+</head>
+<body>
+  <h1>{{ package_name }}</h1>
+  <p>Latest version: {{ (files|last).version }}</p>
+  <ul>
+    {% for file in files|reverse %}
+      <li>
+        <a href="{{ file.url }}">{{ file.filename }}</a>
+        ({{ file }})
+      </li>
+    {% endfor %}
+  </ul>
+</body>
+</html>

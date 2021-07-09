@@ -1,0 +1,35 @@
+[tool.poetry]
+name = "ghpypi"
+version = "0.0.0"  # DO NOT CHANGE -- set during build
+description = "Package index for CIP."
+authors = ["Center for an Informed Public <ciptools@uw.edu>"]
+
+[tool.poetry.scripts]
+ghpypi = "ghpypi:main"
+
+[tool.poetry.dependencies]
+PyGithub = "^1.55"
+distlib = "^0.3.2"
+Jinja2 = "^3.0.1"
+packaging = "^21.0"
+python = "^3.9"
+atomicwrites = "^1.4.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.2.4"
+pytest-flake8 = "^1.0.7"
+flake8 = "^3.9.2"
+flake8-bandit = "^2.1.2"
+flake8-builtins = "^1.5.3"
+flake8-bugbear = "^21.4.3"
+flake8-comprehensions = "^3.5.0"
+flake8-eradicate = "^1.1.0"
+flake8-isort = "^4.0.0"
+pep8-naming = "^0.12.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+addopts = "--flake8 -p no:warnings --log-level=ERROR"
