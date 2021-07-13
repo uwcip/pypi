@@ -100,7 +100,7 @@ class Package(NamedTuple):
             # wheels sort before tarballs, but not always).
             # Alternatively we could just grab the extension, but that's less
             # amusing, even though it took 6 lines of comments to explain this.
-            self.name[::-1],
+            self.filename[::-1],
         )
 
     @classmethod
