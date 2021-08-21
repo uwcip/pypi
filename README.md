@@ -24,7 +24,7 @@ Then you will invoke the script:
 
     $ echo $GITHUB_TOKEN | ghpypi --output docs --repositories repositories --title "CIP PyPi" --token-stdin
 
-The newly built static index can noe be found under `docs` and you can use GitHub Pages to share the `docs` directory.
+The newly built static index can now be found under `docs` and you can use GitHub Pages to share the `docs` directory.
 
 ## Automatically generating static files
 

@@ -3,6 +3,7 @@ name = "ghpypi"
 version = "0.0.0"  # DO NOT CHANGE -- set during build
 description = "Package index for CIP."
 authors = ["Center for an Informed Public <ciptools@uw.edu>"]
+packages = [{include = "ghpypi", from = "src"}]
 
 [tool.poetry.scripts]
 ghpypi = "ghpypi:main"
