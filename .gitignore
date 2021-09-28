@@ -1,6 +1,9 @@
 .*.swp
 *~
 .DS_Store
+.DS_Store?
+.Trashes
+Thumbs.db
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
