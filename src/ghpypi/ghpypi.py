@@ -1,4 +1,5 @@
 import collections
+import hashlib
 import json
 import logging
 import os.path
@@ -11,6 +12,7 @@ import distlib.wheel
 import jinja2
 import packaging.utils
 import packaging.version
+import requests
 from atomicwrites import atomic_write
 from github import Github
 
@@ -63,6 +65,7 @@ class Repository(NamedTuple):
 class Release(NamedTuple):
     filename: str
     url: str
+    sha256: str
     uploaded_at: datetime
     uploaded_by: str
 
@@ -71,6 +74,7 @@ class Package(NamedTuple):
     filename: str
     name: str
     url: str
+    sha256: str
     version: Optional[str]
     parsed_version: packaging.version.Version
     uploaded_at: Optional[datetime]
@@ -109,6 +113,7 @@ class Package(NamedTuple):
             *,
             filename: str,
             url: str,
+            sha256: str,
             uploaded_at: Optional[int] = None,
             uploaded_by: Optional[str] = None,
     ) -> "Package":
@@ -120,6 +125,7 @@ class Package(NamedTuple):
             filename=filename,
             name=packaging.utils.canonicalize_name(name),
             url=url,
+            sha256=sha256,
             version=version,
             parsed_version=packaging.version.parse(version or "0"),
             uploaded_at=uploaded_at,
@@ -246,7 +252,7 @@ def get_github_token(token: str, token_stdin: bool) -> str:
 
 
 def get_releases(token: str, repository: Repository) -> Iterator[Release]:
-    logger.info(f"fetching repositories for {repository.owner}/{repository.name}")
+    logger.info(f"fetching releases for {repository.owner}/{repository.name}")
 
     g = Github(token)
     r = g.get_repo(f"{repository.owner}/{repository.name}")
@@ -258,9 +264,24 @@ def get_releases(token: str, repository: Repository) -> Iterator[Release]:
             continue
 
         for asset in assets:
+            name = asset["name"]
+            url = asset["browser_download_url"]
+
+            # we only want wheels and shasums
+            if not name.endswith(".whl"):
+                continue
+
+            # download the url and get the sha256 sum
+            sha256 = hashlib.sha256()
+            data = requests.get(url, stream=True)
+            for chunk in data.iter_content(chunk_size=1024):
+                if chunk:
+                    sha256.update(chunk)
+
             yield Release(
-                filename=asset["name"],
-                url=asset["browser_download_url"],
+                filename=name,
+                url=url,
+                sha256=sha256.hexdigest(),
                 uploaded_at=datetime.fromisoformat(asset["updated_at"].rstrip("Z")),
                 uploaded_by=asset["uploader"]["login"],
             )

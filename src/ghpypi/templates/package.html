@@ -9,7 +9,7 @@
   <ul>
     {% for file in files|reverse %}
       <li>
-        <a href="{{ file.url }}">{{ file.filename }}</a>
+        <a href="{{ file.url }}#sha256={{ file.sha256 }}">{{ file.filename }}</a>
         ({{ file }})
       </li>
     {% endfor %}
