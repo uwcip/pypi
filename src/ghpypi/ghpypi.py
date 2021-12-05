@@ -9,7 +9,6 @@ from datetime import datetime
 from typing import Any, Dict, Iterator, List, NamedTuple, Optional, Set, Tuple
 
 import distlib.wheel
-import github
 import jinja2
 import packaging.utils
 import packaging.version
