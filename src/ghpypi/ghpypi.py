@@ -9,6 +9,7 @@ from datetime import datetime
 from typing import Any, Dict, Iterator, List, NamedTuple, Optional, Set, Tuple
 
 import distlib.wheel
+import github
 import jinja2
 import packaging.utils
 import packaging.version
@@ -274,6 +275,7 @@ def get_releases(token: str, repository: Repository) -> Iterator[Release]:
             # download the url and get the sha256 sum
             sha256 = hashlib.sha256()
             data = requests.get(url, stream=True)
+            data.raise_for_status()  # we only expect 200 responses
             for chunk in data.iter_content(chunk_size=1024):
                 if chunk:
                     sha256.update(chunk)
