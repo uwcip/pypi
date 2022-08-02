@@ -11,7 +11,7 @@ ghpypi = "ghpypi:main"
 [tool.poetry.dependencies]
 python = "^3.9"
 PyGithub = "^1.55"
-distlib = "^0.3.4"
+distlib = "^0.3.5"
 Jinja2 = "^3.1.2"
 packaging = "^21.3"
 atomicwrites = "^1.4.0"
