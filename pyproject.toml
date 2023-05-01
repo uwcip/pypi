@@ -13,7 +13,7 @@ python = "^3.9"
 PyGithub = "^1.57"
 distlib = "^0.3.6"
 Jinja2 = "^3.1.2"
-packaging = "^21.3"
+packaging = "^23.1"
 atomicwrites = "^1.4.1"
 requests = "^2.28.1"
 
